@@ -1,0 +1,75 @@
+body {
+  background-color: #212E37;
+  color: #C4C8CE;
+}
+
+header {
+  background-color: #2B3743;
+  -webkit-box-shadow: 1px 1px 10px 5px #19252571;
+          box-shadow: 1px 1px 10px 5px #19252571;
+}
+
+header button {
+  color: #FFFFFF;
+}
+
+header button:hover {
+  background-color: #FFFFFF;
+  color: black;
+}
+
+body main .skeleton article {
+  background-color: grey;
+}
+
+section .cards {
+  background-color: #2B3743;
+  -webkit-box-shadow: 1px 1px 10px 5px #19252571;
+          box-shadow: 1px 1px 10px 5px #19252571;
+}
+
+main form input {
+  -webkit-box-shadow: 1px 1px 10px 5px #19252571;
+          box-shadow: 1px 1px 10px 5px #19252571;
+  background-color: #2B3743;
+}
+
+::-webkit-input-placeholder {
+  color: white;
+}
+
+:-ms-input-placeholder {
+  color: white;
+}
+
+::-ms-input-placeholder {
+  color: white;
+}
+
+::placeholder {
+  color: white;
+}
+
+nav button {
+  background-color: #2B3743 !important;
+  color: #C4C8CE;
+  border-color: transparent !important;
+  -webkit-box-shadow: 1px 1px 10px 5px #19252571;
+          box-shadow: 1px 1px 10px 5px #19252571;
+}
+
+#back {
+  background-color: #2B3743;
+  color: #C4C8CE;
+  border-color: transparent;
+  -webkit-box-shadow: 1px 1px 10px 5px #19252571;
+          box-shadow: 1px 1px 10px 5px #19252571;
+}
+
+.menu select {
+  -webkit-box-shadow: 1px 1px 10px 5px #19252571;
+          box-shadow: 1px 1px 10px 5px #19252571;
+  background-color: #2B3743;
+  color: #C4C8CE;
+}
+/*# sourceMappingURL=dark-mode.css.map */
