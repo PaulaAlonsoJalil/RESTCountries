@@ -22,6 +22,15 @@ body main .skeleton article {
   background-color: grey;
 }
 
+a {
+  color: white;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
 section .cards {
   background-color: #2B3743;
   -webkit-box-shadow: 1px 1px 10px 5px #19252571;
@@ -32,6 +41,17 @@ main form input {
   -webkit-box-shadow: 1px 1px 10px 5px #19252571;
           box-shadow: 1px 1px 10px 5px #19252571;
   background-color: #2B3743;
+}
+
+main form div {
+  position: relative;
+}
+
+main form div span {
+  position: absolute;
+  bottom: 22px;
+  left: 30px;
+  color: white;
 }
 
 ::-webkit-input-placeholder {

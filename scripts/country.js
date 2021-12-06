@@ -5,7 +5,7 @@ const nodoBtnGeneral = document.querySelectorAll('buttom')
 const urlCountries = "https://restcountries.com/v3.1/" //the endpoint of the API RESTCountries
 const main = document.querySelector('main')
 const btnBack = document.querySelector("#back")
-
+let qs = new URLSearchParams(location.search)
 /* -------------------------------------------------------------------------- */
 /*                   Logic applied to the country site                        */
 /* -------------------------------------------------------------------------- */
@@ -20,8 +20,11 @@ if (sessionStorage.getItem("darkModeOn") == "true") {
 window.addEventListener("load", function () {
 
     //the function uses the nombrePaisBuscado constant the user entered on the index site
-    buscaPais(urlCountries, sessionStorage.getItem("nombrePaisBuscado"))
-
+    if (qs.get("cca2") == null) {
+        buscaPais(urlCountries, sessionStorage.getItem("nombrePaisBuscado"))
+    } else {
+        buscaPaisPorCca2(urlCountries, qs.get("cca2"))
+    }
     //logic applied to the dark mode button.
     //it will check if there is a value set in the session storage. 
     //in case there isn't or it's false, it will turn on the dark mode
@@ -42,31 +45,15 @@ window.addEventListener("load", function () {
 //along with the css for dark mode and light mode respectively.
 function darkMode() {
     sessionStorage.setItem("darkModeOn", true)
-    document.head.innerHTML = `
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300&display=swap" rel="stylesheet">
-    <link href="css/country.css" rel="stylesheet">
+    document.querySelector("styles").innerHTML = `
     <link href="css/dark-mode.css"  rel="stylesheet">
-    <title>Document</title>
     `
 }
 
 function lightMode() {
     sessionStorage.setItem("darkModeOn", false)
-    document.head.innerHTML = `
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300&display=swap" rel="stylesheet">
-    <link href="css/country.css" rel="stylesheet">
-    <link href="css/light-mode.css" rel="stylesheet">
-    <title>Document</title>
+    document.querySelector("styles").innerHTML = `
+    <link href="css/light-mode.css"  rel="stylesheet">
     `
 }
 
@@ -74,12 +61,22 @@ function lightMode() {
 //calls the function to render the country on the screen
 //After that, calls the function to search for the border countries.
 function buscaPais(url, paisBuscado) {
-    fetch(`${url}/name/${paisBuscado}?fullText=true`)
+    fetch(`${url}/name/${paisBuscado}`)
         .then(function (respuesta) {
             return respuesta.json()
         })
         .then(function (data) {
-            data.reverse()
+            renderizarPais(data)
+            buscarPaisesLimitrofes(url, data)
+        })
+}
+
+function buscaPaisPorCca2(url, paisBuscado) {
+    fetch(`${url}/alpha/${paisBuscado}`)
+        .then(function (respuesta) {
+            return respuesta.json()
+        })
+        .then(function (data) {
             renderizarPais(data)
             buscarPaisesLimitrofes(url, data)
         })
@@ -102,18 +99,18 @@ function renderizarPais(pais) {
             <div>
                 <article>
                     <ul type="none">
-                        <li><b>Official Name: </b>${Object.values(pais[0].name.nativeName)[0].official}</li>
-                        <li><b>Population: </b>${pais[0].population.format()}</li>
+                        <li><b>Official Name: </b>${pais[0].name.nativeName ? Object.values(pais[0].name.nativeName)[0].official : "-"}</li>
+                        <li><b>Population: </b>${pais[0].population ? pais[0].population.format() : "-"}</li>
                         <li><b>Region: </b>${pais[0].region}</li>
                         <li><b>Sub Region: </b>${pais[0].subregion}</li>
-                        <li><b>Capital: </b>${pais[0].capital[0]}</li>
+                        <li><b>Capital: </b>${pais[0].capital ? pais[0].capital[0] : "-"}</li>
                     </ul>
                 </article>
                 <article>
                     <ul type="none">
                         <li><b>Top Level Domain: </b>${pais[0].tld[0]}</li>
-                        <li><b>Currencies: </b>${Object.values(pais[0].currencies)[0].name}</li>
-                        <li><b>Languages: </b>${Object.values(pais[0].languages)[0]}</li>
+                        <li><b>Currencies: </b>${pais[0].currencies ? Object.values(pais[0].currencies)[0].name : "-"}</li>
+                        <li><b>Languages: </b>${pais[0].languages ? Object.values(pais[0].languages)[0] : "-"}</li>
                     </ul>
                 </article>
             </div>
@@ -122,7 +119,8 @@ function renderizarPais(pais) {
             </nav>
         </section>
         `
-
+    const imagen = document.querySelector("img")
+    imagen.style.backgroundColor = "transparent"
 }
 
 //this function searchs the border countries of the given country. It fetchs the 
@@ -153,6 +151,6 @@ function renderizarPaisesLimitrofes(pais) {
     const nav = document.querySelector("nav")
 
     nav.innerHTML += `
-    <button>${pais.name.common}</button>
+    <button><a href='country.html?cca2=${pais.cca2}'>${pais.name.common}</a></button>
     `
 }

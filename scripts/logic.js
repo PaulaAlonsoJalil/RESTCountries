@@ -1,5 +1,3 @@
-
-
 const urlCountries = "https://restcountries.com/v3.1/"
 const paisesMain = document.querySelector('section')
 const formularioBusqueda = document.querySelector('form')
@@ -7,6 +5,7 @@ const nombrePais = document.querySelector('input')
 const btnDarkMode = document.querySelector('button')
 const body = document.querySelector("body")
 const header = document.querySelector("header")
+const list = document.querySelector("#list")
 
 /* -------------------------------------------------------------------------- */
 /*                   Logic applied to the main site                           */
@@ -22,6 +21,13 @@ if (sessionStorage.getItem("darkModeOn") == "true") {
 window.addEventListener("load", function () {
     mostrarPaisesInicio(urlCountries)
 
+    window.addEventListener("scroll", function () {
+        console.log("scroll")
+    })
+
+    list.addEventListener("change", function () {
+        mostrarPaisesPorRegion(urlCountries, list.options[list.selectedIndex].text)
+    })
 
     //Logic applied to the "shearch country" input
     //keeps the country the user entered to the field in the constant nombrePaisBuscado
@@ -50,14 +56,26 @@ window.addEventListener("load", function () {
 //this function shows 10 countries of my choice in the main site. 
 //The function fetch the data from the API and then uses 
 //the renderizarPaisesInicio function to show the countries
+//alpha?codes=de,us,br,is,ar,ax,al,dz,nz,aus
 function mostrarPaisesInicio(url) {
-    fetch(`${url}/alpha?codes=de,us,br,is,ar,ax,al,dz,nz,aus`)
+    fetch(`${url}/all`)
         .then(function (respuesta) {
             return respuesta.json()
         })
         .then(function (data) {
-            data.reverse()
-            console.log(data)
+            paisesMain.classList.remove('skeleton')
+            console.log(data);
+            renderizarPaisesInicio(data)
+        })
+}
+
+
+function mostrarPaisesPorRegion(url, region) {
+    fetch(`${url}/region/${region}`)
+        .then(function (respuesta) {
+            return respuesta.json()
+        })
+        .then(function (data) {
             paisesMain.classList.remove('skeleton')
             renderizarPaisesInicio(data)
         })
@@ -65,8 +83,8 @@ function mostrarPaisesInicio(url) {
 
 //This function is used to format the population number to add commas.
 Number.prototype.format = function () {
-    return this.toString().split(/(?=(?:\d{3})+(?:\.|$))/g).join(",");
-};
+    return this.toString().split(/(?=(?:\d{3})+(?:\.|$))/g).join(",")
+}
 
 // this function renders the 10 countries I previously choose in the mostrarPaisesInicio
 //function. It uses a template string.
@@ -74,46 +92,38 @@ function renderizarPaisesInicio(paises) {
     paisesMain.innerHTML = ""
     paises.forEach(pais => {
         paisesMain.innerHTML += `
-        <article class="cards">
+        <article class="cards post">
             <img src="${pais.flags.png}"/>
-            <h3>${pais.name.common}</h3>
-            <p>Population: <span  class="population">${pais.population.format()}</span></p>
+            <a href='country.html?cca2=${pais.cca2}'><h3>${pais.name.common}</h3></a>
+            <p>Population: <span class="population">${pais.population.format()}</span></p>
             <p>Region: <span>${pais.region}</span></p>
-            <p>Capital: <span>${pais.capital[0]}</span></p>
+            <p>Capital: <span>${pais.capital ? pais.capital[0] : "-"}</span></p>
         </article>
-        `
-    });
-
+        `}
+    )
 }
 
-//The dark mode and light mode functions paste the basic required information in the <head> tag 
-//along with the css for dark mode and light mode respectively.
+//The dark mode and light mode functions paste the css for dark mode and light mode respectively.
 function darkMode() {
     sessionStorage.setItem("darkModeOn", true)
-    document.head.innerHTML = `
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300&display=swap" rel="stylesheet">
-    <link href="css/main.css" rel="stylesheet">
+    document.querySelector("#styles").innerHTML = `
     <link href="css/dark-mode.css"  rel="stylesheet">
-    <title>Document</title>
     `
 }
 
 function lightMode() {
     sessionStorage.setItem("darkModeOn", false)
-    document.head.innerHTML = `
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300&display=swap" rel="stylesheet">
-    <link href="css/main.css" rel="stylesheet">
-    <link href="css/light-mode.css" rel="stylesheet">
-    <title>Document</title>
+    document.querySelector("#styles").innerHTML = `
+    <link href="css/light-mode.css"  rel="stylesheet">
     `
+}
+
+function pagination() {
+    let elem = document.querySelector('.container');
+    let infScroll = new InfiniteScroll(elem, {
+        // options
+        path: '.pagination__next',
+        append: '.post',
+        history: false,
+    });
 }
