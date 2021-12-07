@@ -5,16 +5,20 @@ const nodoBtnGeneral = document.querySelectorAll('buttom')
 const urlCountries = "https://restcountries.com/v3.1/" //the endpoint of the API RESTCountries
 const main = document.querySelector('main')
 const btnBack = document.querySelector("#back")
-let qs = new URLSearchParams(location.search)
+const qs = new URLSearchParams(location.search)
+
+import * as modes from './modes.js';
+import formatNumber from './formatNumber.js';
+
 /* -------------------------------------------------------------------------- */
 /*                   Logic applied to the country site                        */
 /* -------------------------------------------------------------------------- */
 
 // in case the dark mode or the light mode were alredy selected  
 if (sessionStorage.getItem("darkModeOn") == "true") {
-    darkMode()
+    modes.darkMode()
 } else {
-    lightMode()
+    modes.lightMode()
 }
 
 window.addEventListener("load", function () {
@@ -30,9 +34,9 @@ window.addEventListener("load", function () {
     //in case there isn't or it's false, it will turn on the dark mode
     btnDarkMode.addEventListener('click', function () {
         if ((sessionStorage.getItem("darkModeOn")) != "true") {
-            darkMode()
+            modes.darkMode()
         } else {
-            lightMode()
+            modes.lightMode()
         }
     })
 
@@ -40,22 +44,6 @@ window.addEventListener("load", function () {
         location.href = "index.html"
     })
 })
-
-//The dark mode and light mode functions paste the basic required information in the <head> tag 
-//along with the css for dark mode and light mode respectively.
-function darkMode() {
-    sessionStorage.setItem("darkModeOn", true)
-    document.querySelector("styles").innerHTML = `
-    <link href="css/dark-mode.css"  rel="stylesheet">
-    `
-}
-
-function lightMode() {
-    sessionStorage.setItem("darkModeOn", false)
-    document.querySelector("styles").innerHTML = `
-    <link href="css/light-mode.css"  rel="stylesheet">
-    `
-}
 
 //the function fetchs the data of the country from the API and then
 //calls the function to render the country on the screen
@@ -82,11 +70,6 @@ function buscaPaisPorCca2(url, paisBuscado) {
         })
 }
 
-//This function is used to format the population number to add commas.
-Number.prototype.format = function () {
-    return this.toString().split(/(?=(?:\d{3})+(?:\.|$))/g).join(",");
-};
-
 //This function renders the country on the screen using a template string
 function renderizarPais(pais) {
     main.innerHTML = ""
@@ -100,7 +83,7 @@ function renderizarPais(pais) {
                 <article>
                     <ul type="none">
                         <li><b>Official Name: </b>${pais[0].name.nativeName ? Object.values(pais[0].name.nativeName)[0].official : "-"}</li>
-                        <li><b>Population: </b>${pais[0].population ? pais[0].population.format() : "-"}</li>
+                        <li><b>Population: </b>${pais[0].population ? formatNumber(pais[0].population) : "-"}</li>
                         <li><b>Region: </b>${pais[0].region}</li>
                         <li><b>Sub Region: </b>${pais[0].subregion}</li>
                         <li><b>Capital: </b>${pais[0].capital ? pais[0].capital[0] : "-"}</li>
@@ -151,6 +134,6 @@ function renderizarPaisesLimitrofes(pais) {
     const nav = document.querySelector("nav")
 
     nav.innerHTML += `
-    <button><a href='country.html?cca2=${pais.cca2}'>${pais.name.common}</a></button>
+    <a href='country.html?cca2=${pais.cca2}'><button class="border-country">${pais.name.common}</button></a>
     `
 }

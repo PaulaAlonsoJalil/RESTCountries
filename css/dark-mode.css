@@ -9,6 +9,15 @@ header {
           box-shadow: 1px 1px 10px 5px #19252571;
 }
 
+header .title {
+  text-decoration: none;
+}
+
+header .title:hover {
+  text-decoration: none;
+  color: white;
+}
+
 header button {
   color: #FFFFFF;
 }
@@ -22,13 +31,12 @@ body main .skeleton article {
   background-color: grey;
 }
 
-a {
-  color: white;
-  text-decoration: none;
+.border-country:hover, #back:hover {
+  background-color: #212E37 !important;
 }
 
-a:hover {
-  text-decoration: underline;
+a {
+  color: white;
 }
 
 section .cards {
@@ -43,14 +51,7 @@ main form input {
   background-color: #2B3743;
 }
 
-main form div {
-  position: relative;
-}
-
 main form div span {
-  position: absolute;
-  bottom: 22px;
-  left: 30px;
   color: white;
 }
 

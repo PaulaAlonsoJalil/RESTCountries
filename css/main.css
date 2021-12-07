@@ -6156,6 +6156,14 @@ header {
   z-index: 10;
 }
 
+header .title {
+  text-decoration: none;
+}
+
+header .title:hover {
+  text-decoration: none;
+}
+
 header button {
   border-width: 0;
   background-color: transparent;
@@ -6244,6 +6252,14 @@ section article img {
   border-radius: 5px 5px 0 0;
 }
 
+section article a {
+  text-decoration: none;
+}
+
+section article a:hover {
+  text-decoration: underline;
+}
+
 section article h3 {
   padding: 15px 20px;
 }
@@ -6269,6 +6285,16 @@ form input {
   border-color: transparent;
   padding-left: 70px;
   font-family: "Nunito Sans", sans-serif;
+}
+
+form div {
+  position: relative;
+}
+
+form div span {
+  position: absolute;
+  bottom: 22px;
+  left: 30px;
 }
 
 .menu {

@@ -7,15 +7,18 @@ const body = document.querySelector("body")
 const header = document.querySelector("header")
 const list = document.querySelector("#list")
 
+import * as modes from './modes.js'
+import formatNumber from './formatNumber.js';
+
 /* -------------------------------------------------------------------------- */
 /*                   Logic applied to the main site                           */
 /* -------------------------------------------------------------------------- */
 
 // in case the dark mode or the light mode were alredy selected  
 if (sessionStorage.getItem("darkModeOn") == "true") {
-    darkMode()
+    modes.darkMode()
 } else {
-    lightMode()
+    modes.lightMode()
 }
 
 window.addEventListener("load", function () {
@@ -45,9 +48,9 @@ window.addEventListener("load", function () {
     //in case there isn't or it's false, it will turn on the dark mode
     btnDarkMode.addEventListener('click', function () {
         if ((sessionStorage.getItem("darkModeOn")) != "true") {
-            darkMode()
+            modes.darkMode()
         } else {
-            lightMode()
+            modes.lightMode()
         }
     })
 
@@ -81,10 +84,6 @@ function mostrarPaisesPorRegion(url, region) {
         })
 }
 
-//This function is used to format the population number to add commas.
-Number.prototype.format = function () {
-    return this.toString().split(/(?=(?:\d{3})+(?:\.|$))/g).join(",")
-}
 
 // this function renders the 10 countries I previously choose in the mostrarPaisesInicio
 //function. It uses a template string.
@@ -93,37 +92,12 @@ function renderizarPaisesInicio(paises) {
     paises.forEach(pais => {
         paisesMain.innerHTML += `
         <article class="cards post">
-            <img src="${pais.flags.png}"/>
+            <a href='country.html?cca2=${pais.cca2}'><img src="${pais.flags.png}"/></a>
             <a href='country.html?cca2=${pais.cca2}'><h3>${pais.name.common}</h3></a>
-            <p>Population: <span class="population">${pais.population.format()}</span></p>
+            <p>Population: <span class="population">${formatNumber(pais.population)}</span></p>
             <p>Region: <span>${pais.region}</span></p>
             <p>Capital: <span>${pais.capital ? pais.capital[0] : "-"}</span></p>
         </article>
         `}
     )
-}
-
-//The dark mode and light mode functions paste the css for dark mode and light mode respectively.
-function darkMode() {
-    sessionStorage.setItem("darkModeOn", true)
-    document.querySelector("#styles").innerHTML = `
-    <link href="css/dark-mode.css"  rel="stylesheet">
-    `
-}
-
-function lightMode() {
-    sessionStorage.setItem("darkModeOn", false)
-    document.querySelector("#styles").innerHTML = `
-    <link href="css/light-mode.css"  rel="stylesheet">
-    `
-}
-
-function pagination() {
-    let elem = document.querySelector('.container');
-    let infScroll = new InfiniteScroll(elem, {
-        // options
-        path: '.pagination__next',
-        append: '.post',
-        history: false,
-    });
 }

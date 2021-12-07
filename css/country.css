@@ -6172,6 +6172,14 @@ header {
   z-index: 10;
 }
 
+header .title {
+  text-decoration: none;
+}
+
+header .title:hover {
+  text-decoration: none;
+}
+
 header button {
   border-width: 0;
   background-color: transparent;
@@ -6212,7 +6220,7 @@ body {
 }
 
 img {
-  height: 45vh;
+  width: 40vw;
   background-color: lightgrey;
 }
 
@@ -6227,6 +6235,8 @@ main {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   gap: 100px;
 }
 
@@ -6239,17 +6249,20 @@ main .description {
       -ms-flex-direction: column;
           flex-direction: column;
   gap: 20px;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
 }
 
 main .description div {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  width: 500px;
+  max-width: 500px;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
-  justify-items: space-between;
 }
 
 main .description nav {
@@ -6294,5 +6307,9 @@ main .description nav button {
   position: absolute;
   left: 25px;
   top: 7px;
+}
+
+.border-country:hover, #back:hover {
+  cursor: pointer;
 }
 /*# sourceMappingURL=country.css.map */

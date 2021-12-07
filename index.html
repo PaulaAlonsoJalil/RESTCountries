@@ -15,7 +15,7 @@
 <body>
     <div id="styles"></div>
     <header>
-        <h1>Where in the world?</h1>
+        <a class="title" href="index.html"><h1>Where in the world?</h1></a>
         <button><span class="far fa-moon"></span>Dark Mode</button>
     </header>
     <main>
@@ -36,7 +36,7 @@
                 <option>Oceania</option>
             </select>
         </div>
-        <section class="container skeleton" data-infinite-scroll='{ "path": ".pagination__next", "append": ".post", "history": false }'>
+        <section class="skeleton">
             <article></article>
             <article></article>
             <article></article>
@@ -53,8 +53,7 @@
             <article></article>
         </section>
     </main>
-    <script src="./scripts/logic.js"></script>
-    <script src="/path/to/infinite-scroll.pkgd.min.js"></script>
+    <script type="module" src="./scripts/logic.js"></script>
 </body>
 
 </html>
