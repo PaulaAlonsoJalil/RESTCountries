@@ -20,4 +20,6 @@ style-guide.md
 
 *.sass
 *.map
-
+scss/*
+webfonts/*
+*.scss
