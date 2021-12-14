@@ -3,8 +3,7 @@ const paisesMain = document.querySelector('section')
 const formularioBusqueda = document.querySelector('form')
 const nombrePais = document.querySelector('input')
 const btnDarkMode = document.querySelector('button')
-const body = document.querySelector("body")
-const header = document.querySelector("header")
+const btnShowAll = document.querySelector('#show-all')
 const list = document.querySelector("#list")
 
 import * as modes from './modes.js'
@@ -15,26 +14,30 @@ import formatNumber from './formatNumber.js';
 /* -------------------------------------------------------------------------- */
 
 // in case the dark mode or the light mode were alredy selected  
-if (sessionStorage.getItem("darkModeOn") == "true") {
+if (localStorage.getItem("darkModeOn") == "true") {
     modes.darkMode()
 } else {
     modes.lightMode()
 }
 
 window.addEventListener("load", function () {
+    if (!localStorage.allCountries) {
+        guardarPaises(urlCountries)
+    } 
     mostrarPaisesInicio(urlCountries)
 
-    window.addEventListener("scroll", function () {
-        console.log("scroll")
-    })
-
     list.addEventListener("change", function () {
-        mostrarPaisesPorRegion(urlCountries, list.options[list.selectedIndex].text)
+        if (list.options[list.selectedIndex].text == "Filter by Region") {
+            mostrarPaisesInicio(urlCountries)
+        } else {
+            renderizarPaisesInicio(JSON.parse(localStorage.getItem(`${list.options[list.selectedIndex].text}Region`)))
+        }
     })
+    
 
     //Logic applied to the "shearch country" input
     //keeps the country the user entered to the field in the constant nombrePaisBuscado
-    //then keeps it in the sessionStorage and redirects to the country site.
+    //then keeps it in the localStorage and redirects to the country site.
     formularioBusqueda.addEventListener('submit', function (e) {
         e.preventDefault()
         const nombrePaisBuscado = nombrePais.value;
@@ -44,10 +47,10 @@ window.addEventListener("load", function () {
     })
 
     //logic applied to the dark mode button.
-    //it will check if there is a value set in the session storage. 
+    //it will check if there is a value set in the local storage. 
     //in case there isn't or it's false, it will turn on the dark mode
     btnDarkMode.addEventListener('click', function () {
-        if ((sessionStorage.getItem("darkModeOn")) != "true") {
+        if ((localStorage.getItem("darkModeOn")) != "true") {
             modes.darkMode()
         } else {
             modes.lightMode()
@@ -55,26 +58,16 @@ window.addEventListener("load", function () {
     })
 
 })
+/* -------------------------------------------------------------------------- */
+/*                              functions in use                              */
+/* -------------------------------------------------------------------------- */
 
 //this function shows 10 countries of my choice in the main site. 
 //The function fetch the data from the API and then uses 
 //the renderizarPaisesInicio function to show the countries
 //alpha?codes=de,us,br,is,ar,ax,al,dz,nz,aus
 function mostrarPaisesInicio(url) {
-    fetch(`${url}/all`)
-        .then(function (respuesta) {
-            return respuesta.json()
-        })
-        .then(function (data) {
-            paisesMain.classList.remove('skeleton')
-            console.log(data);
-            renderizarPaisesInicio(data)
-        })
-}
-
-
-function mostrarPaisesPorRegion(url, region) {
-    fetch(`${url}/region/${region}`)
+    fetch(`${url}/alpha?codes=de,us,br,is,ar,ax,al,dz,nz,aus`)
         .then(function (respuesta) {
             return respuesta.json()
         })
@@ -100,4 +93,17 @@ function renderizarPaisesInicio(paises) {
         </article>
         `}
     )
+}
+
+async function guardarPaises(url) {
+    const respuesta = await fetch(`${url}/all`)
+    const data = await respuesta.json()
+    const allCountries = data
+    localStorage.setItem("allCountries", JSON.stringify(data));
+    localStorage.setItem("AmericasRegion", JSON.stringify(allCountries.filter(obj => obj.region == "Americas")))
+    localStorage.setItem("EuropeRegion", JSON.stringify(allCountries.filter(obj => obj.region == "Europe")))
+    localStorage.setItem("AfricaRegion", JSON.stringify(allCountries.filter(obj => obj.region == "Africa")))
+    localStorage.setItem("AsiaRegion", JSON.stringify(allCountries.filter(obj => obj.region == "Asia")))
+    localStorage.setItem("OceaniaRegion", JSON.stringify(allCountries.filter(obj => obj.region == "Oceania")))
+    localStorage.setItem("AntarcticRegion", JSON.stringify(allCountries.filter(obj => obj.region == "Antarctic")))
 }

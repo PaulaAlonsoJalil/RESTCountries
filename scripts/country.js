@@ -15,7 +15,7 @@ import formatNumber from './formatNumber.js';
 /* -------------------------------------------------------------------------- */
 
 // in case the dark mode or the light mode were alredy selected  
-if (sessionStorage.getItem("darkModeOn") == "true") {
+if (localStorage.getItem("darkModeOn") == "true") {
     modes.darkMode()
 } else {
     modes.lightMode()
@@ -25,15 +25,15 @@ window.addEventListener("load", function () {
 
     //the function uses the nombrePaisBuscado constant the user entered on the index site
     if (qs.get("cca2") == null) {
-        buscaPais(urlCountries, sessionStorage.getItem("nombrePaisBuscado"))
+        buscaPais(sessionStorage.getItem("nombrePaisBuscado"))
     } else {
         buscaPaisPorCca2(urlCountries, qs.get("cca2"))
     }
     //logic applied to the dark mode button.
-    //it will check if there is a value set in the session storage. 
+    //it will check if there is a value set in the local storage. 
     //in case there isn't or it's false, it will turn on the dark mode
     btnDarkMode.addEventListener('click', function () {
-        if ((sessionStorage.getItem("darkModeOn")) != "true") {
+        if ((localStorage.getItem("darkModeOn")) != "true") {
             modes.darkMode()
         } else {
             modes.lightMode()
@@ -48,15 +48,18 @@ window.addEventListener("load", function () {
 //the function fetchs the data of the country from the API and then
 //calls the function to render the country on the screen
 //After that, calls the function to search for the border countries.
-function buscaPais(url, paisBuscado) {
-    fetch(`${url}/name/${paisBuscado}`)
-        .then(function (respuesta) {
-            return respuesta.json()
-        })
-        .then(function (data) {
-            renderizarPais(data)
-            buscarPaisesLimitrofes(url, data)
-        })
+function buscaPais(paisBuscado) {
+    // fetch(`${url}/name/${paisBuscado}`)
+    //     .then(function (respuesta) {
+    //         return respuesta.json()
+    //     })
+    //     .then(function (data) {
+    //         renderizarPais(data)
+    //         buscarPaisesLimitrofes(url, data)
+    //     })
+
+    renderizarPais(JSON.parse(localStorage.allCountries).filter(obj => obj.name.common.includes(paisBuscado)))
+    
 }
 
 function buscaPaisPorCca2(url, paisBuscado) {
@@ -70,7 +73,7 @@ function buscaPaisPorCca2(url, paisBuscado) {
         })
 }
 
-//This function renders the country on the screen using a template string
+//This function renders the country on the screen using a template literal
 function renderizarPais(pais) {
     main.innerHTML = ""
     main.innerHTML = `
@@ -106,8 +109,7 @@ function renderizarPais(pais) {
     imagen.style.backgroundColor = "transparent"
 }
 
-//this function searchs the border countries of the given country. It fetchs the 
-//dara from the API
+//this function searchs the border countries of the given country.
 function buscarPaisesLimitrofes(url, pais) {
     let paises = [];
     paises = pais[0].borders;
