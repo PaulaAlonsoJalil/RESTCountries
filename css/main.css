@@ -200,6 +200,115 @@ form div span {
   font-family: "Nunito Sans", sans-serif;
 }
 
+@media (max-width: 798px) {
+  section article {
+    width: 270px;
+  }
+  form input {
+    width: 40vw;
+  }
+}
+
+@media (max-width: 726px) {
+  section {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+  section article {
+    width: 300px;
+  }
+  form input {
+    width: 40vw;
+  }
+}
+
+@media (max-width: 610px) {
+  .menu {
+    display: block;
+    margin: 20px 0;
+  }
+  .menu form {
+    margin: 0;
+  }
+  .menu form input {
+    width: 70vw;
+  }
+  .menu select {
+    margin-top: 10px;
+    width: 70vw;
+  }
+  section {
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+  section article {
+    width: 300px;
+  }
+}
+
+@media (max-width: 425px) {
+  .menu {
+    margin: 0px auto 20px auto;
+  }
+  form input {
+    width: 80vw !important;
+  }
+  select {
+    width: 80vw !important;
+  }
+  main {
+    padding: 20px !important;
+  }
+}
+
+@media (max-width: 368px) {
+  form input {
+    height: 5vh;
+  }
+  form div span {
+    bottom: 15px;
+  }
+  select {
+    height: 5vh !important;
+  }
+}
+
+@media (max-width: 522px) {
+  h1 {
+    font-size: 25px;
+  }
+  header {
+    padding: 15px;
+  }
+  header button {
+    font-size: 15px;
+    display: inline;
+  }
+  header button span {
+    margin-right: 5px;
+  }
+}
+
+@media (max-width: 397px) {
+  h1 {
+    font-size: 23px;
+  }
+  header button {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 368px) {
+  h1 {
+    font-size: 17px;
+  }
+  header button {
+    font-size: 11px;
+  }
+}
+
 main {
   padding: 0 70px;
   display: -webkit-box;

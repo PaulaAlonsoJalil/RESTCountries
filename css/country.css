@@ -95,6 +95,92 @@ body {
   background-color: #FAFAFA;
 }
 
+@media (max-width: 1047px) {
+  main {
+    gap: 50px !important;
+  }
+  .description nav {
+    width: 50vw !important;
+  }
+}
+
+@media (max-width: 910px) {
+  .description {
+    width: 70vw;
+    gap: 10px;
+  }
+  .description nav {
+    width: 55vw !important;
+  }
+  .description div {
+    gap: 10px;
+  }
+  #back {
+    margin: 6vh 7vw !important;
+  }
+  img {
+    width: 60vw !important;
+  }
+}
+
+@media (max-width: 798px) {
+  .description nav {
+    width: 80vw !important;
+  }
+}
+
+@media (max-width: 610px) {
+  img {
+    width: 80vw !important;
+  }
+  article {
+    margin: 20px;
+  }
+  .description div {
+    padding-left: 0px;
+  }
+  .description div article {
+    margin: 0;
+  }
+  .description nav {
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 522px) {
+  h1 {
+    font-size: 25px;
+  }
+  header {
+    padding: 15px;
+  }
+  header button {
+    font-size: 15px;
+    display: inline;
+  }
+  header button span {
+    margin-right: 5px;
+  }
+}
+
+@media (max-width: 397px) {
+  h1 {
+    font-size: 23px;
+  }
+  header button {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 368px) {
+  h1 {
+    font-size: 17px;
+  }
+  header button {
+    font-size: 11px;
+  }
+}
+
 img {
   width: 40vw;
   background-color: lightgrey;
